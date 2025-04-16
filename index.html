@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pradeep Banjara | Video Editor</title>
+    <title>Pradeep Banjara</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
@@ -250,21 +250,110 @@
             animation: flicker 4s infinite;
         }
         
-        /* Media query for mobile */
+        .profile-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .profile-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, var(--neon-primary)/50, transparent);
+        }
+        
+        /* Typewriter effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 0.15em solid var(--neon-primary);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: 
+                typing 3.5s steps(30, end),
+                blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--neon-primary) }
+        }
+        
+        /* Enhanced badge styles */
+        .skill-badge {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .skill-badge::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(30deg);
+            animation: badge-shine 4s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes badge-shine {
+            from { transform: translateX(-100%) rotate(30deg); }
+            to { transform: translateX(100%) rotate(30deg); }
+        }
+        
+        /* Improved mobile menu styles */
+        @media (max-width: 1024px) {
+            .rotating-circle {
+                width: 150px;
+                height: 150px;
+            }
+            
+            h1.text-4xl.md\:text-6xl {
+                font-size: 2.5rem;
+            }
+            
+            .skill-bars-container {
+                padding: 0 10px;
+            }
+        }
+        
         @media (max-width: 768px) {
+            /* Fixed mobile menu */
             .menu-container {
                 display: none;
                 position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
+                top: 60px;
+                right: 0;
+                width: auto;
                 background-color: rgba(10, 10, 18, 0.98);
                 z-index: 1000;
                 backdrop-filter: blur(5px);
                 flex-direction: column;
-                justify-content: center;
-                align-items: center;
+                padding: 1rem;
+                border-radius: 0 0 0 10px;
+                border-left: 1px solid var(--neon-primary);
+                border-bottom: 1px solid var(--neon-primary);
+                box-shadow: -3px 3px 10px rgba(133, 132, 255, 0.3);
             }
             
             .menu-container.active {
@@ -276,8 +365,71 @@
             }
             
             .mobile-menu-item {
-                font-size: 24px;
-                margin: 20px 0;
+                font-size: 18px;
+                margin: 15px 20px;
+                text-align: right;
+            }
+            
+            .grid-responsive {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+            
+            .intro-text {
+                order: 1;
+            }
+            
+            .profile-section {
+                order: 0;
+                margin-bottom: 2rem;
+            }
+            
+            .hidden-mobile {
+                display: none;
+            }
+            
+            .horizontal-line {
+                margin: 2rem 0;
+            }
+            
+            .section-padding {
+                padding: 3rem 0;
+            }
+            
+            .project-filter {
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1.text-4xl.md\:text-6xl {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            h2.text-xl.md\:text-2xl {
+                font-size: 1.25rem;
+            }
+            
+            .card-3d {
+                margin-bottom: 1.5rem;
+            }
+            
+            .text-container {
+                padding: 0 1rem;
+            }
+            
+            .rotating-circle {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .skill-section {
+                padding: 0;
+            }
+            
+            .form-container {
+                padding: 1rem;
             }
         }
     </style>
@@ -314,13 +466,13 @@
                 <span>&lt;</span>PRADEEP BANJARA<span>/&gt;</span>
             </div>
             
-            <div class="menu-toggle hidden cursor-pointer z-[1001]" id="menuToggle">
+            <div class="menu-toggle cursor-pointer z-[1001]" id="menuToggle">
                 <div class="w-8 h-0.5 bg-neon-primary mb-1.5 transition-all"></div>
                 <div class="w-8 h-0.5 bg-neon-primary mb-1.5 transition-all"></div>
                 <div class="w-8 h-0.5 bg-neon-primary transition-all"></div>
             </div>
             
-            <div class="menu-container flex space-x-8 text-light/80" id="menuContainer">
+            <div class="menu-container hidden md:flex space-x-8 text-light/80" id="menuContainer">
                 <a href="#top" class="menu-item mobile-menu-item">Home</a>
                 <a href="#about" class="menu-item mobile-menu-item">About</a>
                 <a href="#skills" class="menu-item mobile-menu-item">Skills</a>
@@ -331,13 +483,13 @@
     </header>
     
     <!-- Hero Section -->
-    <section class="min-h-screen flex flex-col justify-center relative overflow-hidden pt-20 pb-12">
+    <section class="min-h-screen flex flex-col justify-center relative overflow-hidden pt-20 pb-12 section-padding">
         <div class="rotating-circle left-[5%] top-[20%]"></div>
         <div class="rotating-circle right-[5%] bottom-[20%]" style="animation-direction: reverse;"></div>
         
         <div class="container mx-auto px-4 relative z-10">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="reveal">
+            <div class="grid md:grid-cols-2 gap-12 items-center grid-responsive">
+                <div class="reveal intro-text">
                     <div class="mb-4 inline-block neon-box px-3 py-1 rounded-full mono text-sm">
                         <span class="loading-dots">WELCOME TO MY PORTFOLIO</span>
                     </div>
@@ -346,10 +498,18 @@
                     </h1>
                     <div class="flex items-center mb-6">
                         <div class="h-0.5 w-16 bg-neon-primary mr-4"></div>
-                        <h2 class="text-xl md:text-2xl italic text-light/80">Professional Video Editor</h2>
+                        <h2 class="text-xl md:text-2xl italic text-light/80">Student, BCA</h2>
                     </div>
-                    <p class="text-light/70 mb-8 max-w-md">
-                        Transforming raw footage into captivating visual stories. With a keen eye for detail and creative flair, I specialize in crafting compelling video narratives that engage and inspire audiences.
+                    
+                    <!-- Typewriter effect for intro -->
+                    <div class="mb-4 overflow-hidden">
+                        <p class="typewriter text-light/70 mb-4 max-w-md text-container hidden">
+                            Web Developer | YouTube SEO | Video Editor
+                        </p>
+                    </div>
+                    
+                    <p class="text-light/70 mb-8 max-w-md text-container">
+                        Passionate about technology and programming. Currently pursuing Bachelor's in Computer Application with focus on web development, software engineering, and building user-friendly applications.
                     </p>
                     <div class="flex flex-wrap gap-4">
                         <a href="#projects" class="neon-box px-6 py-3 rounded-md hover:bg-primary/20 transition-all">
@@ -361,16 +521,16 @@
                     </div>
                 </div>
                 
-                <div class="reveal" style="transition-delay: 0.3s">
+                <div class="reveal profile-section" style="transition-delay: 0.3s">
                     <div class="relative aspect-square max-w-md mx-auto">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="hero-blob">
                             <path fill="rgba(93, 92, 222, 0.2)" d="M40.8,-69.5C54.1,-62.8,67.1,-54.4,75.9,-42.1C84.7,-29.8,89.3,-14.9,88.8,-0.3C88.3,14.3,82.8,28.6,74.2,41.1C65.6,53.7,54,64.3,40.6,70.4C27.3,76.5,13.6,78.1,-0.2,78.3C-13.9,78.6,-27.8,77.6,-40.7,71.7C-53.5,65.8,-65.4,55.1,-72.2,41.9C-79,28.7,-80.7,14.3,-80.5,0.1C-80.2,-14.1,-78,-28.3,-71.1,-41C-64.1,-53.6,-52.5,-64.9,-39.2,-71.5C-25.9,-78.1,-12.9,-80.1,0.3,-80.7C13.6,-81.2,27.1,-76.2,40.8,-69.5Z" transform="translate(100 100)" />
                         </svg>
                         <div class="absolute inset-0 rounded-full overflow-hidden border-2 border-neon-primary/50" style="background: radial-gradient(circle, var(--dark-secondary) 60%, var(--neon-primary) 200%);">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="text-8xl text-neon-primary opacity-90 glow-text">P</div>
+                            <div class="profile-container">
+                                <img src="https://picsum.photos/seed/pradeep/600/600" alt="Pradeep Banjara" class="profile-image" id="profileImage">
+                                <div class="profile-overlay"></div>
                             </div>
-                            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-primary/30 to-transparent"></div>
                         </div>
                         <div class="absolute w-full h-full rounded-full border border-neon-primary/20 animate-pulse"></div>
                     </div>
@@ -378,7 +538,7 @@
             </div>
         </div>
         
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce">
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce hidden-mobile">
             <span class="text-light/50 text-sm mb-2">Scroll Down</span>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -387,7 +547,7 @@
     </section>
     
     <!-- About Section -->
-    <section id="about" class="py-20 relative overflow-hidden">
+    <section id="about" class="py-20 relative overflow-hidden section-padding">
         <div class="horizontal-line"></div>
         <div class="container mx-auto px-4">
             <div class="mb-16 text-center">
@@ -395,17 +555,17 @@
                 <div class="w-24 h-1 bg-neon-primary mx-auto"></div>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="grid md:grid-cols-2 gap-12 items-center grid-responsive">
                 <div class="reveal">
                     <div class="p-1 rounded-lg neon-box">
                         <div class="rounded-lg overflow-hidden aspect-video bg-dark-secondary relative">
                             <div class="absolute inset-0 flex items-center justify-center bg-dark-secondary">
                                 <div class="text-center">
-                                    <div class="mono text-neon-primary text-xl">&lt;edit&gt;</div>
-                                    <div class="text-4xl font-bold my-4">Professional</div>
-                                    <div class="text-4xl font-bold my-4">Video Editor</div>
+                                    <div class="mono text-neon-primary text-xl">&lt;code&gt;</div>
+                                    <div class="text-4xl font-bold my-4">BCA Student</div>
+                                    <div class="text-4xl font-bold my-4">Web Developer</div>
                                     <div class="text-4xl font-bold my-4">from Nepal</div>
-                                    <div class="mono text-neon-primary text-xl">&lt;/edit&gt;</div>
+                                    <div class="mono text-neon-primary text-xl">&lt;/code&gt;</div>
                                 </div>
                             </div>
                             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-neon-secondary opacity-70"></div>
@@ -416,30 +576,30 @@
                 
                 <div class="reveal" style="transition-delay: 0.3s">
                     <div class="mono text-neon-primary mb-4">Namaste!</div>
-                    <h3 class="text-3xl font-bold mb-4">I'm a Professional Video Editor from Nepal</h3>
-                    <p class="text-light/70 mb-6">
-                        Born and raised in the beautiful landscapes of Nepal, I've developed a unique visual perspective that combines traditional storytelling with modern editing techniques. My passion for visual narratives has led me to specialize in creating compelling video content that resonates with viewers across cultures.
+                    <h3 class="text-3xl font-bold mb-4">I'm a BCA Student from Lalitpur, Nepal</h3>
+                    <p class="text-light/70 mb-6 text-container">
+                        Currently pursuing my Bachelor's in Computer Application at Jana Bhawana Campus since February 2021. I'm passionate about learning key skills in programming, software development, and IT management to prepare for a career in technology.
                     </p>
-                    <p class="text-light/70 mb-8">
-                        With a deep appreciation for both Nepali heritage and contemporary global trends, I bring cultural sensitivity and international appeal to every project. When I'm not editing, you'll find me exploring the stunning mountains of Nepal, seeking inspiration from its rich visual tapestry.
+                    <p class="text-light/70 mb-8 text-container">
+                        With a year of experience in YouTube SEO and Video Editing, I combine my technical knowledge with creative skills to develop engaging digital content. I'm constantly expanding my knowledge in web development and programming languages to create innovative solutions.
                     </p>
                     
                     <div class="grid grid-cols-2 gap-6 mb-8">
                         <div>
-                            <div class="text-xl font-bold mb-2">5+</div>
-                            <div class="text-light/60">Years of Experience</div>
+                            <div class="text-xl font-bold mb-2">BCA</div>
+                            <div class="text-light/60">Student at Jana Bhawana Campus</div>
                         </div>
                         <div>
-                            <div class="text-xl font-bold mb-2">50+</div>
-                            <div class="text-light/60">Projects Completed</div>
+                            <div class="text-xl font-bold mb-2">1+</div>
+                            <div class="text-light/60">Year YouTube SEO Experience</div>
                         </div>
                         <div>
-                            <div class="text-xl font-bold mb-2">20+</div>
-                            <div class="text-light/60">Happy Clients</div>
+                            <div class="text-xl font-bold mb-2">Web Dev</div>
+                            <div class="text-light/60">Frontend & Backend</div>
                         </div>
                         <div>
-                            <div class="text-xl font-bold mb-2">15+</div>
-                            <div class="text-light/60">International Clients</div>
+                            <div class="text-xl font-bold mb-2">Certified</div>
+                            <div class="text-light/60">React & Microsoft Office</div>
                         </div>
                     </div>
                     
@@ -451,8 +611,93 @@
         </div>
     </section>
     
+    <!-- Education Section -->
+    <section class="py-20 relative overflow-hidden bg-dark-secondary section-padding">
+        <div class="horizontal-line"></div>
+        <div class="container mx-auto px-4">
+            <div class="mb-16 text-center">
+                <h2 class="text-4xl font-bold heading mb-3">My <span class="text-neon-primary">Education</span></h2>
+                <div class="w-24 h-1 bg-neon-primary mx-auto"></div>
+            </div>
+            
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-neon-primary/30"></div>
+                
+                <!-- Timeline item 1 -->
+                <div class="relative z-10 mb-12">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-8 md:text-right mb-6 md:mb-0">
+                            <div class="neon-box p-6 rounded-lg">
+                                <h3 class="text-xl font-bold mb-2">Bachelor of Computer Application (BCA)</h3>
+                                <p class="text-light/70 mb-3">Jana Bhawana Campus, Lalitpur</p>
+                                <p class="text-light/60 italic">February 2021 - Present</p>
+                                <p class="text-light/70 mt-3">Learning key skills in programming, software development, and IT management to prepare for a career in the technology industry.</p>
+                            </div>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-dark-secondary border-4 border-neon-primary flex items-center justify-center absolute left-1/2 transform -translate-x-1/2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-primary">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                            </svg>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8"></div>
+                    </div>
+                </div>
+                
+                <!-- Timeline item 2 -->
+                <div class="relative z-10 mb-12">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-8"></div>
+                        <div class="w-10 h-10 rounded-full bg-dark-secondary border-4 border-neon-secondary flex items-center justify-center absolute left-1/2 transform -translate-x-1/2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
+                                <path d="M6 2l.01 3"></path>
+                                <path d="M18 2l-.01 3"></path>
+                                <rect x="2" y="7" width="20" height="15" rx="2"></rect>
+                                <path d="M10 12h4"></path>
+                                <path d="M10 16h4"></path>
+                                <path d="M6 12h.01"></path>
+                                <path d="M6 16h.01"></path>
+                            </svg>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8 mb-6 md:mb-0">
+                            <div class="neon-box-secondary p-6 rounded-lg">
+                                <h3 class="text-xl font-bold mb-2">Microsoft Word & Excel Certification</h3>
+                                <p class="text-light/70 mb-3">Professional Certification</p>
+                                <p class="text-light/60 italic">2021</p>
+                                <p class="text-light/70 mt-3">Gained proficiency in Microsoft Office suite with focus on document creation, formatting, data analysis, and formula-based calculations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline item 3 -->
+                <div class="relative z-10">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-8 md:text-right mb-6 md:mb-0">
+                            <div class="neon-box p-6 rounded-lg">
+                                <h3 class="text-xl font-bold mb-2">React Developer Certification</h3>
+                                <p class="text-light/70 mb-3">Online Training Program</p>
+                                <p class="text-light/60 italic">2023</p>
+                                <p class="text-light/70 mt-3">Comprehensive training in React.js framework, modern JavaScript, component architecture, state management, and single-page application development.</p>
+                            </div>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-dark-secondary border-4 border-neon-primary flex items-center justify-center absolute left-1/2 transform -translate-x-1/2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-primary">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <circle cx="12" cy="12" r="6"></circle>
+                                <circle cx="12" cy="12" r="2"></circle>
+                            </svg>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!-- Skills Section -->
-    <section id="skills" class="py-20 relative overflow-hidden bg-dark-secondary">
+    <section id="skills" class="py-20 relative overflow-hidden section-padding">
         <div class="horizontal-line"></div>
         <div class="container mx-auto px-4">
             <div class="mb-16 text-center">
@@ -460,43 +705,13 @@
                 <div class="w-24 h-1 bg-neon-primary mx-auto"></div>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="reveal">
-                    <h3 class="text-2xl font-bold mb-6 mono">Video Editing Expertise</h3>
+            <div class="grid md:grid-cols-2 gap-12 skill-bars-container">
+                <div class="reveal skill-section">
+                    <h3 class="text-2xl font-bold mb-6 mono">Development Skills</h3>
                     
                     <div class="mb-6">
                         <div class="flex justify-between items-center">
-                            <span class="font-semibold">Video Editing</span>
-                            <span class="mono text-neon-primary">95%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-percentage" style="width: 95%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold">Motion Graphics</span>
-                            <span class="mono text-neon-primary">90%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-percentage" style="width: 90%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold">Color Grading</span>
-                            <span class="mono text-neon-primary">88%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-percentage" style="width: 88%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold">Sound Design</span>
+                            <span class="font-semibold">HTML/CSS</span>
                             <span class="mono text-neon-primary">85%</span>
                         </div>
                         <div class="skill-bar">
@@ -506,7 +721,7 @@
                     
                     <div class="mb-6">
                         <div class="flex justify-between items-center">
-                            <span class="font-semibold">Visual Effects</span>
+                            <span class="font-semibold">JavaScript</span>
                             <span class="mono text-neon-primary">80%</span>
                         </div>
                         <div class="skill-bar">
@@ -514,35 +729,59 @@
                         </div>
                     </div>
                     
-                    <h4 class="text-xl font-semibold mb-4 mt-8">Software Proficiency</h4>
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">React</span>
+                            <span class="mono text-neon-primary">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">PHP/MySQL</span>
+                            <span class="mono text-neon-primary">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Python/Django</span>
+                            <span class="mono text-neon-primary">70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 70%"></div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-xl font-semibold mb-4 mt-8">Technical Proficiency</h4>
                     <div class="flex flex-wrap gap-3">
-                        <span class="neon-box px-3 py-1 rounded-full text-sm">Adobe Premiere Pro</span>
-                        <span class="neon-box px-3 py-1 rounded-full text-sm">After Effects</span>
-                        <span class="neon-box px-3 py-1 rounded-full text-sm">DaVinci Resolve</span>
-                        <span class="neon-box px-3 py-1 rounded-full text-sm">Final Cut Pro</span>
-                        <span class="neon-box px-3 py-1 rounded-full text-sm">Photoshop</span>
-                        <span class="neon-box px-3 py-1 rounded-full text-sm">Illustrator</span>
-                        <span class="neon-box px-3 py-1 rounded-full text-sm">Audition</span>
-                        <span class="neon-box px-3 py-1 rounded-full text-sm">Cinema 4D</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">HTML</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">CSS</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">JavaScript</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">PHP</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">MySQL</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">React (Certified)</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">jQuery</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">.NET</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">Python</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">Django</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">TypeScript</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm skill-badge">SQLite</span>
                     </div>
                 </div>
                 
-                <div class="reveal" style="transition-delay: 0.3s">
-                    <h3 class="text-2xl font-bold mb-6 mono">Specialized Skills</h3>
+                <div class="reveal skill-section" style="transition-delay: 0.3s">
+                    <h3 class="text-2xl font-bold mb-6 mono">Additional Skills</h3>
                     
                     <div class="mb-6">
                         <div class="flex justify-between items-center">
-                            <span class="font-semibold">Storytelling & Narrative</span>
-                            <span class="mono text-neon-secondary">95%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-percentage" style="width: 95%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold">Title & Graphics Design</span>
+                            <span class="font-semibold">MS Office (Word, Excel, PowerPoint)</span>
                             <span class="mono text-neon-secondary">90%</span>
                         </div>
                         <div class="skill-bar">
@@ -552,44 +791,51 @@
                     
                     <div class="mb-6">
                         <div class="flex justify-between items-center">
-                            <span class="font-semibold">Documentary Editing</span>
-                            <span class="mono text-neon-secondary">92%</span>
+                            <span class="font-semibold">Canva Design</span>
+                            <span class="mono text-neon-secondary">95%</span>
                         </div>
                         <div class="skill-bar">
-                            <div class="skill-percentage" style="width: 92%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                            <div class="skill-percentage" style="width: 95%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
                         </div>
                     </div>
                     
                     <div class="mb-6">
                         <div class="flex justify-between items-center">
-                            <span class="font-semibold">Commercial & Promo</span>
-                            <span class="mono text-neon-secondary">88%</span>
+                            <span class="font-semibold">YouTube SEO</span>
+                            <span class="mono text-neon-secondary">85%</span>
                         </div>
                         <div class="skill-bar">
-                            <div class="skill-percentage" style="width: 88%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                            <div class="skill-percentage" style="width: 85%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
                         </div>
                     </div>
                     
                     <div class="mb-6">
                         <div class="flex justify-between items-center">
-                            <span class="font-semibold">Multicultural Content</span>
-                            <span class="mono text-neon-secondary">94%</span>
+                            <span class="font-semibold">Video Editing (DaVinci Resolve)</span>
+                            <span class="mono text-neon-secondary">80%</span>
                         </div>
                         <div class="skill-bar">
-                            <div class="skill-percentage" style="width: 94%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                            <div class="skill-percentage" style="width: 80%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
                         </div>
                     </div>
                     
-                    <h4 class="text-xl font-semibold mb-4 mt-8">Project Types</h4>
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Graphics Design</span>
+                            <span class="mono text-neon-secondary">60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 60%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-xl font-semibold mb-4 mt-8">Tools & Languages</h4>
                     <div class="flex flex-wrap gap-3">
-                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Documentaries</span>
-                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Short Films</span>
-                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Travel Films</span>
-                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Music Videos</span>
-                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Commercials</span>
-                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Corporate Videos</span>
-                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Social Media</span>
-                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Wedding Films</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm skill-badge">DaVinci Resolve</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm skill-badge">Canva</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm skill-badge">English</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm skill-badge">Nepali</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm skill-badge">Hindi</span>
                     </div>
                 </div>
             </div>
@@ -597,7 +843,7 @@
     </section>
     
     <!-- Projects Section -->
-    <section id="projects" class="py-20 relative overflow-hidden">
+    <section id="projects" class="py-20 relative overflow-hidden bg-dark-secondary section-padding">
         <div class="horizontal-line"></div>
         <div class="container mx-auto px-4">
             <div class="mb-16 text-center">
@@ -607,39 +853,41 @@
             
             <div class="flex mb-10 justify-center flex-wrap gap-4">
                 <button class="project-filter active px-4 py-2 rounded-full neon-box hover:bg-primary/20 transition-all" data-filter="all">All</button>
-                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="documentary">Documentary</button>
-                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="commercial">Commercial</button>
-                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="film">Film</button>
+                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="web">Web Dev</button>
+                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="software">Software</button>
+                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="design">Design</button>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project 1 -->
-                <div class="project-card reveal" data-category="documentary">
+                <!-- Project 1 - MEDSOFT -->
+                <div class="project-card reveal" data-category="software">
                     <div class="card-3d rounded-xl overflow-hidden relative group">
                         <div class="aspect-video bg-dark-secondary relative overflow-hidden">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
-                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                                        <line x1="12" y1="17" x2="12" y2="21"></line>
                                     </svg>
                                 </div>
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
                             <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
-                                Documentary
+                                Software
                             </div>
                         </div>
                         <div class="p-6 relative">
-                            <h3 class="text-xl font-bold mb-2">Nepal: Hidden Treasures</h3>
-                            <p class="text-light/70 text-sm mb-4">A stunning documentary showcasing the untold stories and hidden treasures of rural Nepal, featuring breathtaking landscapes and cultural insights.</p>
+                            <h3 class="text-xl font-bold mb-2">MEDSOFT</h3>
+                            <p class="text-light/70 text-sm mb-4">A user-friendly system to streamline drug storage and retrieval. Implements robust tracking mechanisms for timely identification and management of expiration dates.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">DaVinci Resolve</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Color Grading</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Sound Design</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Database</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Inventory Management</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Healthcare</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Trailer</a>
-                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                                <a href="https://github.com/prdp05/Medsoft" target="_blank" class="text-neon-secondary hover:underline text-sm">View Project</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/code&gt;</a>
                             </div>
                             <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
@@ -647,32 +895,36 @@
                 </div>
                 
                 <!-- Project 2 -->
-                <div class="project-card reveal" data-category="commercial">
+                <div class="project-card reveal" data-category="web">
                     <div class="card-3d rounded-xl overflow-hidden relative group">
                         <div class="aspect-video bg-dark-secondary relative overflow-hidden">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
-                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                                        <line x1="12" y1="22" x2="12" y2="15.5"></line>
+                                        <polyline points="22 8.5 12 15.5 2 8.5"></polyline>
+                                        <polyline points="2 15.5 12 8.5 22 15.5"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="8.5"></line>
                                     </svg>
                                 </div>
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
                             <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
-                                Commercial
+                                Web App
                             </div>
                         </div>
                         <div class="p-6 relative">
-                            <h3 class="text-xl font-bold mb-2">Mountain Fresh Tea</h3>
-                            <p class="text-light/70 text-sm mb-4">A vibrant commercial campaign for Nepal's premier tea brand, showcasing the journey from misty mountains to teacup with stunning visuals.</p>
+                            <h3 class="text-xl font-bold mb-2">Student Portal</h3>
+                            <p class="text-light/70 text-sm mb-4">A responsive web application for student management with features for attendance tracking, course registration, and performance analysis.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Premiere Pro</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">After Effects</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Motion Graphics</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Django</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Python</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">SQLite</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Video</a>
-                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">View Project</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/code&gt;</a>
                             </div>
                             <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
@@ -680,32 +932,32 @@
                 </div>
                 
                 <!-- Project 3 -->
-                <div class="project-card reveal" data-category="film">
+                <div class="project-card reveal" data-category="design">
                     <div class="card-3d rounded-xl overflow-hidden relative group">
                         <div class="aspect-video bg-dark-secondary relative overflow-hidden">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
-                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"></path>
                                     </svg>
                                 </div>
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
                             <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
-                                Short Film
+                                YouTube SEO
                             </div>
                         </div>
                         <div class="p-6 relative">
-                            <h3 class="text-xl font-bold mb-2">Echoes of the Himalayas</h3>
-                            <p class="text-light/70 text-sm mb-4">An award-winning short film following a young Sherpa's journey of self-discovery against the backdrop of the majestic Himalayas.</p>
+                            <h3 class="text-xl font-bold mb-2">NepalTech Channel</h3>
+                            <p class="text-light/70 text-sm mb-4">Optimized a tech education YouTube channel with SEO strategies, increasing subscribers by 40% and improving video performance through metadata optimization.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Final Cut Pro</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Visual Effects</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Sound Design</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">SEO</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">DaVinci Resolve</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Video Editing</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Trailer</a>
-                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">View Case Study</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/code&gt;</a>
                             </div>
                             <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
@@ -713,32 +965,34 @@
                 </div>
                 
                 <!-- Project 4 -->
-                <div class="project-card reveal" data-category="documentary">
+                <div class="project-card reveal" data-category="web">
                     <div class="card-3d rounded-xl overflow-hidden relative group">
                         <div class="aspect-video bg-dark-secondary relative overflow-hidden">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
-                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                                        <line x1="9" y1="21" x2="9" y2="9"></line>
                                     </svg>
                                 </div>
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
                             <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
-                                Documentary
+                                Web Development
                             </div>
                         </div>
                         <div class="p-6 relative">
-                            <h3 class="text-xl font-bold mb-2">Living Heritage</h3>
-                            <p class="text-light/70 text-sm mb-4">A cultural documentary exploring the living heritage of Nepal's indigenous communities and their efforts to preserve traditions in a rapidly changing world.</p>
+                            <h3 class="text-xl font-bold mb-2">React Task Manager</h3>
+                            <p class="text-light/70 text-sm mb-4">A modern task management application built with React and TypeScript, featuring drag-and-drop functionality and local storage persistence.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Adobe Premiere</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Color Grading</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Documentarian</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">React</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">TypeScript</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">CSS</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Clips</a>
-                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">View Project</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/code&gt;</a>
                             </div>
                             <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
@@ -746,32 +1000,33 @@
                 </div>
                 
                 <!-- Project 5 -->
-                <div class="project-card reveal" data-category="commercial">
+                <div class="project-card reveal" data-category="design">
                     <div class="card-3d rounded-xl overflow-hidden relative group">
                         <div class="aspect-video bg-dark-secondary relative overflow-hidden">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
-                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                        <circle cx="12" cy="13" r="4"></circle>
                                     </svg>
                                 </div>
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
                             <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
-                                Tourism Campaign
+                                Video Editing
                             </div>
                         </div>
                         <div class="p-6 relative">
-                            <h3 class="text-xl font-bold mb-2">Visit Nepal 2023</h3>
-                            <p class="text-light/70 text-sm mb-4">An official tourism campaign showcasing Nepal's breathtaking landscapes, rich culture, and adventure opportunities to international audiences.</p>
+                            <h3 class="text-xl font-bold mb-2">Travel Nepal Series</h3>
+                            <p class="text-light/70 text-sm mb-4">A series of promotional travel videos showcasing Nepal's natural beauty and cultural heritage, with optimized content for social media engagement.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
                                 <span class="px-2 py-1 bg-dark text-xs rounded-full">DaVinci Resolve</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Aerial Footage</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Motion Graphics</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Color Grading</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">YouTube SEO</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Campaign</a>
-                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Trailer</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/code&gt;</a>
                             </div>
                             <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
@@ -779,32 +1034,34 @@
                 </div>
                 
                 <!-- Project 6 -->
-                <div class="project-card reveal" data-category="film">
+                <div class="project-card reveal" data-category="design">
                     <div class="card-3d rounded-xl overflow-hidden relative group">
                         <div class="aspect-video bg-dark-secondary relative overflow-hidden">
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
-                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                        <path d="M2 17l10 5 10-5"></path>
+                                        <path d="M2 12l10 5 10-5"></path>
                                     </svg>
                                 </div>
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
                             <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
-                                Music Video
+                                Canva Design
                             </div>
                         </div>
                         <div class="p-6 relative">
-                            <h3 class="text-xl font-bold mb-2">Resonance</h3>
-                            <p class="text-light/70 text-sm mb-4">A visually stunning music video for a popular Nepali fusion band, blending traditional instruments with modern visuals and cutting-edge editing techniques.</p>
+                            <h3 class="text-xl font-bold mb-2">Digital Marketing Kit</h3>
+                            <p class="text-light/70 text-sm mb-4">Comprehensive branding and marketing materials created using Canva for local businesses, including social media templates, presentations, and promotional materials.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">After Effects</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Visual Effects</span>
-                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Motion Graphics</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Canva</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Branding</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Design</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Video</a>
-                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">View Portfolio</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/code&gt;</a>
                             </div>
                             <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
@@ -821,7 +1078,7 @@
     </section>
     
     <!-- Contact Section -->
-    <section id="contact" class="py-20 relative overflow-hidden bg-dark-secondary">
+    <section id="contact" class="py-20 relative overflow-hidden section-padding">
         <div class="horizontal-line"></div>
         <div class="container mx-auto px-4">
             <div class="mb-16 text-center">
@@ -829,11 +1086,11 @@
                 <div class="w-24 h-1 bg-neon-primary mx-auto"></div>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-12">
+            <div class="grid md:grid-cols-2 gap-12 grid-responsive">
                 <div class="reveal">
                     <h3 class="text-2xl font-bold mb-6">Get In Touch</h3>
-                    <p class="text-light/70 mb-8">
-                        Have a video project in mind or want to collaborate? Feel free to reach out through the form or my contact details. I'm always open to discussing new ideas, creative concepts, or opportunities to bring your vision to life.
+                    <p class="text-light/70 mb-8 text-container">
+                        Have a project in mind or interested in collaborating? Feel free to reach out through the form or my contact details. I'm always open to discussing new opportunities in web development, programming, or digital content creation.
                     </p>
                     
                     <div class="flex items-center mb-6">
@@ -844,7 +1101,7 @@
                         </div>
                         <div>
                             <div class="text-light/50 text-sm">Phone</div>
-                            <div class="font-semibold">+977 98-1234-5678</div>
+                            <div class="font-semibold">+977 9848744205</div>
                         </div>
                     </div>
                     
@@ -857,7 +1114,7 @@
                         </div>
                         <div>
                             <div class="text-light/50 text-sm">Email</div>
-                            <div class="font-semibold">pradeepbanjara@example.com</div>
+                            <div class="font-semibold">pradeepbanjara92@gmail.com</div>
                         </div>
                     </div>
                     
@@ -870,19 +1127,19 @@
                         </div>
                         <div>
                             <div class="text-light/50 text-sm">Location</div>
-                            <div class="font-semibold">Kathmandu, Nepal</div>
+                            <div class="font-semibold">Godawari, Lalitpur, Nepal</div>
                         </div>
                     </div>
                     
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center neon-box hover:bg-primary/20 transition-all">
+                        <a href="https://www.linkedin.com/in/pradeep-banjara-89565625a/" class="w-10 h-10 rounded-full flex items-center justify-center neon-box hover:bg-primary/20 transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                                 <rect x="2" y="9" width="4" height="12"></rect>
                                 <circle cx="4" cy="4" r="2"></circle>
                             </svg>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center neon-box hover:bg-primary/20 transition-all">
+                        <a href="https://www.instagram.com/prdp05/" class="w-10 h-10 rounded-full flex items-center justify-center neon-box hover:bg-primary/20 transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -903,7 +1160,7 @@
                     </div>
                 </div>
                 
-                <div class="reveal" style="transition-delay: 0.3s">
+                <div class="reveal form-container" style="transition-delay: 0.3s">
                     <form class="neon-box p-6 rounded-lg">
                         <div class="mb-6">
                             <label class="block text-light/70 mb-2 text-sm" for="name">Name</label>
@@ -948,21 +1205,21 @@
     </section>
     
     <!-- Footer -->
-    <footer class="py-8 text-center text-light/60 relative overflow-hidden">
+    <footer class="py-8 text-center text-light/60 relative overflow-hidden bg-dark-secondary">
         <div class="container mx-auto px-4">
             <div class="mb-6">
                 <div class="text-2xl font-bold mono text-neon-primary mb-2">
                     <span>&lt;</span>PRADEEP BANJARA<span>/&gt;</span>
                 </div>
                 <p class="text-light/50 max-w-md mx-auto text-sm">
-                    Crafting compelling visual stories from the heart of Nepal
+                    BCA Student and Web Developer from Nepal
                 </p>
             </div>
             
             <div class="horizontal-line mb-6"></div>
             
             <div class="text-sm">
-                &copy; 2023 Pradeep Banjara. All Rights Reserved.
+                &copy; 2025 Pradeep Banjara. All Rights Reserved.
             </div>
         </div>
     </footer>
@@ -985,6 +1242,38 @@
             } else {
                 document.documentElement.classList.remove('dark');
             }
+        });
+        
+        // Show typewriter effect after page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.querySelector('.typewriter').classList.remove('hidden');
+            }, 1000);
+        });
+        
+        // Profile Image Randomizer - Uses a seed to keep the same image on refresh
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileImage = document.getElementById('profileImage');
+            const randomSeed = Math.floor(Math.random() * 1000);
+            
+            // Randomly choose between different profile image styles
+            const imageTypes = [
+                `https://picsum.photos/seed/pradeep${randomSeed}/600/600`, // Realistic photo
+                `https://picsum.photos/seed/profile${randomSeed}/600/600`, // Another variation
+            ];
+            
+            // Set a random image
+            const randomImageUrl = imageTypes[Math.floor(Math.random() * imageTypes.length)];
+            profileImage.src = randomImageUrl;
+            
+            // Add hover effect
+            profileImage.addEventListener('mouseover', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            profileImage.addEventListener('mouseout', function() {
+                this.style.transform = 'scale(1)';
+            });
         });
         
         // Initialize particles.js
@@ -1251,7 +1540,7 @@
             });
         });
         
-        // Mobile Menu Toggle
+        // Mobile Menu Toggle - Fixed for proper functionality
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
             const menuContainer = document.getElementById('menuContainer');
@@ -1260,7 +1549,6 @@
             if (menuToggle && menuContainer) {
                 menuToggle.addEventListener('click', function() {
                     menuContainer.classList.toggle('active');
-                    document.body.classList.toggle('overflow-hidden');
                     
                     // Animate toggle button
                     const bars = menuToggle.querySelectorAll('div');
@@ -1282,7 +1570,6 @@
                     item.addEventListener('click', function() {
                         if (menuContainer.classList.contains('active')) {
                             menuContainer.classList.remove('active');
-                            document.body.classList.remove('overflow-hidden');
                             
                             // Reset toggle button
                             const bars = menuToggle.querySelectorAll('div');
@@ -1314,6 +1601,50 @@
                     }
                 });
             });
+        });
+        
+        // Improved responsiveness for mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if device is mobile
+            const updateLayout = () => {
+                const isMobile = window.innerWidth <= 768;
+                
+                // Force menu to be properly hidden when in mobile view on initial load
+                if (isMobile) {
+                    const menuContainer = document.getElementById('menuContainer');
+                    
+                    // Reset menu to hidden state on load and resize
+                    if (menuContainer) {
+                        menuContainer.classList.remove('active');
+                        menuContainer.style.display = '';
+                        
+                        // Reset hamburger icon
+                        const bars = document.getElementById('menuToggle').querySelectorAll('div');
+                        bars.forEach(bar => {
+                            bar.style.transform = 'none';
+                            bar.style.opacity = '1';
+                        });
+                    }
+                    
+                    // Add touch-friendly features
+                    const touchElements = document.querySelectorAll('.card-3d, .neon-box, .menu-item');
+                    touchElements.forEach(el => {
+                        el.addEventListener('touchstart', function() {
+                            this.classList.add('active-touch');
+                        });
+                        
+                        el.addEventListener('touchend', function() {
+                            this.classList.remove('active-touch');
+                        });
+                    });
+                }
+            };
+            
+            // Run on load
+            updateLayout();
+            
+            // Run on resize
+            window.addEventListener('resize', updateLayout);
         });
     </script>
 </body>
