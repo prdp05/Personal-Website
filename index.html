@@ -3,45 +3,1318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Website</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Pradeep Banjara | Video Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --primary: #5D5CDE;
+            --neon-primary: #8584ff;
+            --neon-secondary: #00ffcc;
+            --dark: #0a0a12;
+            --dark-secondary: #15151f;
+            --light: #e0e0ff;
+            --font-primary: 'Rajdhani', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .dark body {
+            background-color: var(--dark);
+            color: var(--light);
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .heading {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px var(--neon-primary), 0 0 20px var(--neon-primary), 0 0 30px var(--neon-primary);
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+        }
+
+        .neon-box {
+            border: 1px solid var(--neon-primary);
+            box-shadow: 0 0 10px var(--neon-primary), inset 0 0 10px var(--neon-primary);
+        }
+
+        .neon-box-secondary {
+            border: 1px solid var(--neon-secondary);
+            box-shadow: 0 0 10px var(--neon-secondary), inset 0 0 10px var(--neon-secondary);
+        }
+
+        .progress-bar {
+            height: 4px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary));
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 20px;
+            background: white;
+            right: 0;
+            top: 0;
+            filter: blur(5px);
+            animation: progress-glow 1.5s infinite;
+        }
+
+        @keyframes progress-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .card-3d {
+            transition: transform 0.5s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .glitch-text {
+            position: relative;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+        
+        .glitch-text::before {
+            color: var(--neon-primary);
+            z-index: -1;
+        }
+        
+        .glitch-text::after {
+            color: var(--neon-secondary);
+            z-index: -2;
+        }
+
+        .cursor-glow {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(93, 92, 222, 0.2) 0%, rgba(93, 92, 222, 0) 70%);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .horizontal-line {
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--neon-primary) 20%, 
+                var(--neon-primary) 80%, 
+                transparent 100%);
+            width: 100%;
+            margin: 3rem 0;
+            position: relative;
+        }
+        
+        .horizontal-line::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--neon-primary);
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px var(--neon-primary);
+        }
+        
+        .skill-bar {
+            position: relative;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 6px 0 20px 0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .skill-percentage {
+            position: absolute;
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--neon-primary));
+        }
+        
+        @keyframes skill-animation {
+            from { width: 0; }
+        }
+        
+        .rotating-circle {
+            position: absolute;
+            border: 1px dashed var(--neon-primary);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .menu-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-primary);
+            transition: width 0.3s ease;
+        }
+        
+        .menu-item:hover::before {
+            width: 100%;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 0 8px var(--neon-primary);
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @keyframes flicker {
+            0% { opacity: 1; }
+            5% { opacity: 0.5; }
+            10% { opacity: 0.8; }
+            15% { opacity: 0.9; }
+            20% { opacity: 1; }
+            73% { opacity: 1; }
+            75% { opacity: 0.7; }
+            80% { opacity: 1; }
+            97% { opacity: 1; }
+            99% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        
+        .flicker {
+            animation: flicker 4s infinite;
+        }
+        
+        /* Media query for mobile */
+        @media (max-width: 768px) {
+            .menu-container {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(10, 10, 18, 0.98);
+                z-index: 1000;
+                backdrop-filter: blur(5px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .menu-container.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+            
+            .mobile-menu-item {
+                font-size: 24px;
+                margin: 20px 0;
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        'neon-primary': '#8584ff',
+                        'neon-secondary': '#00ffcc',
+                        dark: '#0a0a12',
+                        'dark-secondary': '#15151f',
+                        light: '#e0e0ff'
+                    },
+                    fontFamily: {
+                        sans: ['Rajdhani', 'sans-serif'],
+                        mono: ['"Share Tech Mono"', 'monospace']
+                    }
+                }
+            }
+        };
+    </script>
 </head>
-<body>
-    <header>
-        <h1>Pradeep Banjara</h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+<body class="relative bg-dark text-light" id="top">
+    <div class="cursor-glow"></div>
+    <div id="particles-js"></div>
+    
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full bg-dark/60 backdrop-blur-md z-50 border-b border-primary/30">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-xl font-bold mono text-neon-primary flicker">
+                <span>&lt;</span>PRADEEP BANJARA<span>/&gt;</span>
+            </div>
+            
+            <div class="menu-toggle hidden cursor-pointer z-[1001]" id="menuToggle">
+                <div class="w-8 h-0.5 bg-neon-primary mb-1.5 transition-all"></div>
+                <div class="w-8 h-0.5 bg-neon-primary mb-1.5 transition-all"></div>
+                <div class="w-8 h-0.5 bg-neon-primary transition-all"></div>
+            </div>
+            
+            <div class="menu-container flex space-x-8 text-light/80" id="menuContainer">
+                <a href="#top" class="menu-item mobile-menu-item">Home</a>
+                <a href="#about" class="menu-item mobile-menu-item">About</a>
+                <a href="#skills" class="menu-item mobile-menu-item">Skills</a>
+                <a href="#projects" class="menu-item mobile-menu-item">Projects</a>
+                <a href="#contact" class="menu-item mobile-menu-item">Contact</a>
+            </div>
         </nav>
     </header>
     
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Welcome to my personal website. I am a passionate web developer...</p>
-    </section>
-    
-    <section id="portfolio">
-        <h2>Portfolio</h2>
-        <div class="gallery">
-            <div class="project">Project 1</div>
-            <div class="project">Project 2</div>
-            <div class="project">Project 3</div>
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center relative overflow-hidden pt-20 pb-12">
+        <div class="rotating-circle left-[5%] top-[20%]"></div>
+        <div class="rotating-circle right-[5%] bottom-[20%]" style="animation-direction: reverse;"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <div class="mb-4 inline-block neon-box px-3 py-1 rounded-full mono text-sm">
+                        <span class="loading-dots">WELCOME TO MY PORTFOLIO</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-2 heading glitch-text" data-text="I'm Pradeep Banjara">
+                        I'm Pradeep Banjara
+                    </h1>
+                    <div class="flex items-center mb-6">
+                        <div class="h-0.5 w-16 bg-neon-primary mr-4"></div>
+                        <h2 class="text-xl md:text-2xl italic text-light/80">Professional Video Editor</h2>
+                    </div>
+                    <p class="text-light/70 mb-8 max-w-md">
+                        Transforming raw footage into captivating visual stories. With a keen eye for detail and creative flair, I specialize in crafting compelling video narratives that engage and inspire audiences.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#projects" class="neon-box px-6 py-3 rounded-md hover:bg-primary/20 transition-all">
+                            View Projects
+                        </a>
+                        <a href="#contact" class="neon-box-secondary px-6 py-3 rounded-md hover:bg-neon-secondary/20 transition-all">
+                            Contact Me
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="reveal" style="transition-delay: 0.3s">
+                    <div class="relative aspect-square max-w-md mx-auto">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="hero-blob">
+                            <path fill="rgba(93, 92, 222, 0.2)" d="M40.8,-69.5C54.1,-62.8,67.1,-54.4,75.9,-42.1C84.7,-29.8,89.3,-14.9,88.8,-0.3C88.3,14.3,82.8,28.6,74.2,41.1C65.6,53.7,54,64.3,40.6,70.4C27.3,76.5,13.6,78.1,-0.2,78.3C-13.9,78.6,-27.8,77.6,-40.7,71.7C-53.5,65.8,-65.4,55.1,-72.2,41.9C-79,28.7,-80.7,14.3,-80.5,0.1C-80.2,-14.1,-78,-28.3,-71.1,-41C-64.1,-53.6,-52.5,-64.9,-39.2,-71.5C-25.9,-78.1,-12.9,-80.1,0.3,-80.7C13.6,-81.2,27.1,-76.2,40.8,-69.5Z" transform="translate(100 100)" />
+                        </svg>
+                        <div class="absolute inset-0 rounded-full overflow-hidden border-2 border-neon-primary/50" style="background: radial-gradient(circle, var(--dark-secondary) 60%, var(--neon-primary) 200%);">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-8xl text-neon-primary opacity-90 glow-text">P</div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-primary/30 to-transparent"></div>
+                        </div>
+                        <div class="absolute w-full h-full rounded-full border border-neon-primary/20 animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce">
+            <span class="text-light/50 text-sm mb-2">Scroll Down</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </div>
     </section>
     
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <form id="contact-form">
-            <input type="text" id="name" placeholder="Your Name" required>
-            <input type="email" id="email" placeholder="Your Email" required>
-            <textarea id="message" placeholder="Your Message" required></textarea>
-            <button type="submit">Send</button>
-        </form>
+    <!-- About Section -->
+    <section id="about" class="py-20 relative overflow-hidden">
+        <div class="horizontal-line"></div>
+        <div class="container mx-auto px-4">
+            <div class="mb-16 text-center">
+                <h2 class="text-4xl font-bold heading mb-3">About <span class="text-neon-primary">Me</span></h2>
+                <div class="w-24 h-1 bg-neon-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <div class="p-1 rounded-lg neon-box">
+                        <div class="rounded-lg overflow-hidden aspect-video bg-dark-secondary relative">
+                            <div class="absolute inset-0 flex items-center justify-center bg-dark-secondary">
+                                <div class="text-center">
+                                    <div class="mono text-neon-primary text-xl">&lt;edit&gt;</div>
+                                    <div class="text-4xl font-bold my-4">Professional</div>
+                                    <div class="text-4xl font-bold my-4">Video Editor</div>
+                                    <div class="text-4xl font-bold my-4">from Nepal</div>
+                                    <div class="mono text-neon-primary text-xl">&lt;/edit&gt;</div>
+                                </div>
+                            </div>
+                            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-neon-secondary opacity-70"></div>
+                            <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-neon-secondary to-primary opacity-70"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reveal" style="transition-delay: 0.3s">
+                    <div class="mono text-neon-primary mb-4">Namaste!</div>
+                    <h3 class="text-3xl font-bold mb-4">I'm a Professional Video Editor from Nepal</h3>
+                    <p class="text-light/70 mb-6">
+                        Born and raised in the beautiful landscapes of Nepal, I've developed a unique visual perspective that combines traditional storytelling with modern editing techniques. My passion for visual narratives has led me to specialize in creating compelling video content that resonates with viewers across cultures.
+                    </p>
+                    <p class="text-light/70 mb-8">
+                        With a deep appreciation for both Nepali heritage and contemporary global trends, I bring cultural sensitivity and international appeal to every project. When I'm not editing, you'll find me exploring the stunning mountains of Nepal, seeking inspiration from its rich visual tapestry.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <div class="text-xl font-bold mb-2">5+</div>
+                            <div class="text-light/60">Years of Experience</div>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold mb-2">50+</div>
+                            <div class="text-light/60">Projects Completed</div>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold mb-2">20+</div>
+                            <div class="text-light/60">Happy Clients</div>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold mb-2">15+</div>
+                            <div class="text-light/60">International Clients</div>
+                        </div>
+                    </div>
+                    
+                    <a href="#contact" class="neon-box inline-block px-6 py-3 rounded-md hover:bg-primary/20 transition-all">
+                        Connect With Me
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
     
-    <script src="script.js"></script>
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 relative overflow-hidden bg-dark-secondary">
+        <div class="horizontal-line"></div>
+        <div class="container mx-auto px-4">
+            <div class="mb-16 text-center">
+                <h2 class="text-4xl font-bold heading mb-3">My <span class="text-neon-primary">Skills</span></h2>
+                <div class="w-24 h-1 bg-neon-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="reveal">
+                    <h3 class="text-2xl font-bold mb-6 mono">Video Editing Expertise</h3>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Video Editing</span>
+                            <span class="mono text-neon-primary">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Motion Graphics</span>
+                            <span class="mono text-neon-primary">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Color Grading</span>
+                            <span class="mono text-neon-primary">88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 88%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Sound Design</span>
+                            <span class="mono text-neon-primary">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Visual Effects</span>
+                            <span class="mono text-neon-primary">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-xl font-semibold mb-4 mt-8">Software Proficiency</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="neon-box px-3 py-1 rounded-full text-sm">Adobe Premiere Pro</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm">After Effects</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm">DaVinci Resolve</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm">Final Cut Pro</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm">Photoshop</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm">Illustrator</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm">Audition</span>
+                        <span class="neon-box px-3 py-1 rounded-full text-sm">Cinema 4D</span>
+                    </div>
+                </div>
+                
+                <div class="reveal" style="transition-delay: 0.3s">
+                    <h3 class="text-2xl font-bold mb-6 mono">Specialized Skills</h3>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Storytelling & Narrative</span>
+                            <span class="mono text-neon-secondary">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 95%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Title & Graphics Design</span>
+                            <span class="mono text-neon-secondary">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 90%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Documentary Editing</span>
+                            <span class="mono text-neon-secondary">92%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 92%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Commercial & Promo</span>
+                            <span class="mono text-neon-secondary">88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 88%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Multicultural Content</span>
+                            <span class="mono text-neon-secondary">94%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 94%; background: linear-gradient(90deg, var(--neon-secondary), var(--primary));"></div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-xl font-semibold mb-4 mt-8">Project Types</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Documentaries</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Short Films</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Travel Films</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Music Videos</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Commercials</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Corporate Videos</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Social Media</span>
+                        <span class="neon-box-secondary px-3 py-1 rounded-full text-sm">Wedding Films</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 relative overflow-hidden">
+        <div class="horizontal-line"></div>
+        <div class="container mx-auto px-4">
+            <div class="mb-16 text-center">
+                <h2 class="text-4xl font-bold heading mb-3">My <span class="text-neon-primary">Projects</span></h2>
+                <div class="w-24 h-1 bg-neon-primary mx-auto"></div>
+            </div>
+            
+            <div class="flex mb-10 justify-center flex-wrap gap-4">
+                <button class="project-filter active px-4 py-2 rounded-full neon-box hover:bg-primary/20 transition-all" data-filter="all">All</button>
+                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="documentary">Documentary</button>
+                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="commercial">Commercial</button>
+                <button class="project-filter px-4 py-2 rounded-full border border-light/30 hover:neon-box transition-all" data-filter="film">Film</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card reveal" data-category="documentary">
+                    <div class="card-3d rounded-xl overflow-hidden relative group">
+                        <div class="aspect-video bg-dark-secondary relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
+                            <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
+                                Documentary
+                            </div>
+                        </div>
+                        <div class="p-6 relative">
+                            <h3 class="text-xl font-bold mb-2">Nepal: Hidden Treasures</h3>
+                            <p class="text-light/70 text-sm mb-4">A stunning documentary showcasing the untold stories and hidden treasures of rural Nepal, featuring breathtaking landscapes and cultural insights.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">DaVinci Resolve</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Color Grading</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Sound Design</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Trailer</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card reveal" data-category="commercial">
+                    <div class="card-3d rounded-xl overflow-hidden relative group">
+                        <div class="aspect-video bg-dark-secondary relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
+                            <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
+                                Commercial
+                            </div>
+                        </div>
+                        <div class="p-6 relative">
+                            <h3 class="text-xl font-bold mb-2">Mountain Fresh Tea</h3>
+                            <p class="text-light/70 text-sm mb-4">A vibrant commercial campaign for Nepal's premier tea brand, showcasing the journey from misty mountains to teacup with stunning visuals.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Premiere Pro</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">After Effects</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Motion Graphics</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Video</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card reveal" data-category="film">
+                    <div class="card-3d rounded-xl overflow-hidden relative group">
+                        <div class="aspect-video bg-dark-secondary relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
+                            <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
+                                Short Film
+                            </div>
+                        </div>
+                        <div class="p-6 relative">
+                            <h3 class="text-xl font-bold mb-2">Echoes of the Himalayas</h3>
+                            <p class="text-light/70 text-sm mb-4">An award-winning short film following a young Sherpa's journey of self-discovery against the backdrop of the majestic Himalayas.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Final Cut Pro</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Visual Effects</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Sound Design</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Trailer</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="project-card reveal" data-category="documentary">
+                    <div class="card-3d rounded-xl overflow-hidden relative group">
+                        <div class="aspect-video bg-dark-secondary relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
+                            <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
+                                Documentary
+                            </div>
+                        </div>
+                        <div class="p-6 relative">
+                            <h3 class="text-xl font-bold mb-2">Living Heritage</h3>
+                            <p class="text-light/70 text-sm mb-4">A cultural documentary exploring the living heritage of Nepal's indigenous communities and their efforts to preserve traditions in a rapidly changing world.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Adobe Premiere</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Color Grading</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Documentarian</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Clips</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="project-card reveal" data-category="commercial">
+                    <div class="card-3d rounded-xl overflow-hidden relative group">
+                        <div class="aspect-video bg-dark-secondary relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
+                            <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
+                                Tourism Campaign
+                            </div>
+                        </div>
+                        <div class="p-6 relative">
+                            <h3 class="text-xl font-bold mb-2">Visit Nepal 2023</h3>
+                            <p class="text-light/70 text-sm mb-4">An official tourism campaign showcasing Nepal's breathtaking landscapes, rich culture, and adventure opportunities to international audiences.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">DaVinci Resolve</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Aerial Footage</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Motion Graphics</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Campaign</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="project-card reveal" data-category="film">
+                    <div class="card-3d rounded-xl overflow-hidden relative group">
+                        <div class="aspect-video bg-dark-secondary relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neon-secondary">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-secondary/90"></div>
+                            <div class="absolute top-0 right-0 m-3 px-2 py-1 text-xs rounded bg-neon-secondary/20 text-neon-secondary border border-neon-secondary/30">
+                                Music Video
+                            </div>
+                        </div>
+                        <div class="p-6 relative">
+                            <h3 class="text-xl font-bold mb-2">Resonance</h3>
+                            <p class="text-light/70 text-sm mb-4">A visually stunning music video for a popular Nepali fusion band, blending traditional instruments with modern visuals and cutting-edge editing techniques.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">After Effects</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Visual Effects</span>
+                                <span class="px-2 py-1 bg-dark text-xs rounded-full">Motion Graphics</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" class="text-neon-secondary hover:underline text-sm">Watch Video</a>
+                                <a href="#" class="text-neon-secondary hover:underline text-sm mono">&lt;/edit&gt;</a>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon-secondary/50 to-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="neon-box inline-block px-6 py-3 rounded-md hover:bg-primary/20 transition-all">
+                    View All Projects
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 relative overflow-hidden bg-dark-secondary">
+        <div class="horizontal-line"></div>
+        <div class="container mx-auto px-4">
+            <div class="mb-16 text-center">
+                <h2 class="text-4xl font-bold heading mb-3">Contact <span class="text-neon-primary">Me</span></h2>
+                <div class="w-24 h-1 bg-neon-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="reveal">
+                    <h3 class="text-2xl font-bold mb-6">Get In Touch</h3>
+                    <p class="text-light/70 mb-8">
+                        Have a video project in mind or want to collaborate? Feel free to reach out through the form or my contact details. I'm always open to discussing new ideas, creative concepts, or opportunities to bring your vision to life.
+                    </p>
+                    
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center neon-box mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-light/50 text-sm">Phone</div>
+                            <div class="font-semibold">+977 98-1234-5678</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center neon-box mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-light/50 text-sm">Email</div>
+                            <div class="font-semibold">pradeepbanjara@example.com</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center mb-8">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center neon-box mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-light/50 text-sm">Location</div>
+                            <div class="font-semibold">Kathmandu, Nepal</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center neon-box hover:bg-primary/20 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center neon-box hover:bg-primary/20 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center neon-box hover:bg-primary/20 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center neon-box hover:bg-primary/20 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="reveal" style="transition-delay: 0.3s">
+                    <form class="neon-box p-6 rounded-lg">
+                        <div class="mb-6">
+                            <label class="block text-light/70 mb-2 text-sm" for="name">Name</label>
+                            <div class="relative">
+                                <input type="text" id="name" class="w-full bg-dark-secondary text-light border border-light/20 rounded-md py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent text-base" placeholder="Your Name">
+                                <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-neon-primary scale-x-0 origin-left transition-transform group-focus-within:scale-x-100"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-light/70 mb-2 text-sm" for="email">Email</label>
+                            <div class="relative">
+                                <input type="email" id="email" class="w-full bg-dark-secondary text-light border border-light/20 rounded-md py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent text-base" placeholder="Your Email">
+                                <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-neon-primary scale-x-0 origin-left transition-transform group-focus-within:scale-x-100"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-light/70 mb-2 text-sm" for="subject">Subject</label>
+                            <div class="relative">
+                                <input type="text" id="subject" class="w-full bg-dark-secondary text-light border border-light/20 rounded-md py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent text-base" placeholder="Subject">
+                                <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-neon-primary scale-x-0 origin-left transition-transform group-focus-within:scale-x-100"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-light/70 mb-2 text-sm" for="message">Message</label>
+                            <div class="relative">
+                                <textarea id="message" rows="5" class="w-full bg-dark-secondary text-light border border-light/20 rounded-md py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent text-base" placeholder="Your Message"></textarea>
+                                <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-neon-primary scale-x-0 origin-left transition-transform group-focus-within:scale-x-100"></div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white py-3 px-6 rounded-md transition-all relative overflow-hidden group">
+                            <span class="relative z-10">Send Message</span>
+                            <span class="absolute inset-0 bg-gradient-to-r from-primary to-neon-primary opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-8 text-center text-light/60 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="mb-6">
+                <div class="text-2xl font-bold mono text-neon-primary mb-2">
+                    <span>&lt;</span>PRADEEP BANJARA<span>/&gt;</span>
+                </div>
+                <p class="text-light/50 max-w-md mx-auto text-sm">
+                    Crafting compelling visual stories from the heart of Nepal
+                </p>
+            </div>
+            
+            <div class="horizontal-line mb-6"></div>
+            
+            <div class="text-sm">
+                &copy; 2023 Pradeep Banjara. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <a href="#top" class="back-to-top fixed bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center neon-box opacity-0 invisible transition-all z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </a>
+    
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+        
+        // Initialize particles.js
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#5D5CDE" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 2, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#5D5CDE",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "grab" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    },
+                    modes: {
+                        grab: { distance: 140, line_linked: { opacity: 0.5 } },
+                        push: { particles_nb: 4 }
+                    }
+                },
+                retina_detect: true
+            });
+        });
+        
+        // GSAP Animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize GSAP
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Initialize reveal elements
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach((el) => {
+                gsap.fromTo(el, 
+                    { y: 30, opacity: 0 }, 
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+            
+            // Skill bars animation
+            const skillBars = document.querySelectorAll('.skill-percentage');
+            skillBars.forEach((bar) => {
+                const percentage = bar.style.width;
+                gsap.fromTo(bar, 
+                    { width: 0 }, 
+                    {
+                        width: percentage,
+                        duration: 1.5,
+                        scrollTrigger: {
+                            trigger: bar,
+                            start: 'top 90%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+            
+            // Header background change on scroll
+            gsap.to('header', {
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top -50',
+                    toggleActions: 'play none none reverse',
+                    onEnter: () => document.querySelector('header').classList.add('bg-dark/90'),
+                    onLeaveBack: () => document.querySelector('header').classList.remove('bg-dark/90')
+                }
+            });
+            
+            // Back to top button visibility
+            const backToTopButton = document.querySelector('.back-to-top');
+            if (backToTopButton) {
+                ScrollTrigger.create({
+                    trigger: 'body',
+                    start: 'top -300',
+                    end: 99999,
+                    toggleClass: { className: 'opacity-100 visible', targets: backToTopButton }
+                });
+            }
+            
+            // Glitch effect for texts with glitch-text class
+            const glitchTexts = document.querySelectorAll('.glitch-text');
+            glitchTexts.forEach((text) => {
+                const textContent = text.getAttribute('data-text');
+                
+                const glitchAnimation = () => {
+                    const tl = gsap.timeline({ repeat: 0 });
+                    
+                    tl.to(text, {
+                        duration: 0.1,
+                        skewX: 5,
+                        ease: "power1.inOut"
+                    })
+                    .to(text, {
+                        duration: 0.1,
+                        skewX: 0,
+                        ease: "power1.inOut"
+                    })
+                    .to(text, {
+                        duration: 0.1,
+                        opacity: 0.8,
+                        ease: "power1.inOut"
+                    })
+                    .to(text, {
+                        duration: 0.1,
+                        opacity: 1,
+                        ease: "power1.inOut"
+                    })
+                    .to(text.querySelector('::before'), {
+                        duration: 0.1,
+                        x: -3,
+                        ease: "power1.inOut"
+                    }, "-=0.1")
+                    .to(text.querySelector('::after'), {
+                        duration: 0.1,
+                        x: 3,
+                        ease: "power1.inOut"
+                    }, "-=0.1")
+                    .to(text.querySelector('::before'), {
+                        duration: 0.1,
+                        x: 0,
+                        ease: "power1.inOut"
+                    })
+                    .to(text.querySelector('::after'), {
+                        duration: 0.1,
+                        x: 0,
+                        ease: "power1.inOut"
+                    });
+                    
+                    return tl;
+                };
+                
+                // Run the glitch animation on page load
+                const mainGlitch = gsap.timeline();
+                mainGlitch.add(glitchAnimation());
+                
+                // Run glitch animation periodically
+                gsap.delayedCall(5, function repeatGlitch() {
+                    glitchAnimation();
+                    gsap.delayedCall(gsap.utils.random(5, 10), repeatGlitch);
+                });
+            });
+        });
+        
+        // 3D Card Effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card-3d');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const xOffset = ((x / rect.width) - 0.5) * 20;
+                    const yOffset = ((y / rect.height) - 0.5) * 20;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${-yOffset}deg) rotateY(${xOffset}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+                });
+            });
+        });
+        
+        // Cursor Glow Effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const cursorGlow = document.querySelector('.cursor-glow');
+            
+            document.addEventListener('mousemove', function(e) {
+                cursorGlow.style.display = 'block';
+                cursorGlow.style.left = e.clientX + 'px';
+                cursorGlow.style.top = e.clientY + 'px';
+            });
+            
+            document.addEventListener('mouseout', function() {
+                cursorGlow.style.display = 'none';
+            });
+        });
+        
+        // Loading Dots Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingDots = document.querySelectorAll('.loading-dots');
+            
+            loadingDots.forEach(element => {
+                const text = element.textContent;
+                element.textContent = text;
+                
+                const animateDots = () => {
+                    let dotCount = 0;
+                    
+                    const addDot = () => {
+                        dotCount = (dotCount + 1) % 4;
+                        const dots = '.'.repeat(dotCount);
+                        element.textContent = text + dots + ' '.repeat(3 - dotCount);
+                    };
+                    
+                    addDot();
+                    const interval = setInterval(addDot, 500);
+                    
+                    // Clean up interval if needed
+                    return () => clearInterval(interval);
+                };
+                
+                animateDots();
+            });
+        });
+        
+        // Project Filter
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.project-filter');
+            const projects = document.querySelectorAll('.project-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'neon-box');
+                        btn.classList.add('border', 'border-light/30');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active', 'neon-box');
+                    this.classList.remove('border', 'border-light/30');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Filter projects
+                    projects.forEach(project => {
+                        if (filter === 'all' || project.getAttribute('data-category') === filter) {
+                            gsap.to(project, { duration: 0.5, opacity: 1, scale: 1, display: 'block' });
+                        } else {
+                            gsap.to(project, { duration: 0.5, opacity: 0, scale: 0.8, display: 'none' });
+                        }
+                    });
+                });
+            });
+        });
+        
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const menuContainer = document.getElementById('menuContainer');
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            if (menuToggle && menuContainer) {
+                menuToggle.addEventListener('click', function() {
+                    menuContainer.classList.toggle('active');
+                    document.body.classList.toggle('overflow-hidden');
+                    
+                    // Animate toggle button
+                    const bars = menuToggle.querySelectorAll('div');
+                    if (menuContainer.classList.contains('active')) {
+                        // Transform to X
+                        bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        bars[1].style.opacity = '0';
+                        bars[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+                    } else {
+                        // Reset
+                        bars[0].style.transform = 'none';
+                        bars[1].style.opacity = '1';
+                        bars[2].style.transform = 'none';
+                    }
+                });
+                
+                // Close menu when clicking menu items
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        if (menuContainer.classList.contains('active')) {
+                            menuContainer.classList.remove('active');
+                            document.body.classList.remove('overflow-hidden');
+                            
+                            // Reset toggle button
+                            const bars = menuToggle.querySelectorAll('div');
+                            bars[0].style.transform = 'none';
+                            bars[1].style.opacity = '1';
+                            bars[2].style.transform = 'none';
+                        }
+                    });
+                });
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const headerOffset = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
